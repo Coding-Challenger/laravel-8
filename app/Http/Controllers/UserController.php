@@ -3,21 +3,30 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Service\UserService;
 use Illuminate\Http\Request;
 
 
 class UserController extends Controller
 {
+    protected $userService;
+
+    public function __construct()
+    {
+        $this->userService = new UserService();
+    }
+
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
+     * @param User $user
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(Request $request, User $user)
     {
-        $users = User::limit(10)->get([
-            'id', 'name', 'email'
-        ]);
+        $users = $this->userService->indexQuery($request, $user);
+
         return response()->json($users);
     }
 
@@ -37,15 +46,20 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //p
     }
 
 
-    public function show(User $user)
+    public function show($id)
     {
-        return response()->json([
-            'user' => $user
-        ]);
+        $user = User::find((int) $id);
+
+        if (null !== $user) {
+            return response()->json($user);
+        }
+
+        return response()->json(['error' => 'Usuário não encontrado!']);
+
     }
 
     /**

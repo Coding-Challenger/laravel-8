@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Route;
 //    return $request->user();
 //});
 
-Route::resource('users', \App\Http\Controllers\UserController::class);
-Route::resource('endereco', \App\Http\Controllers\EnderecoController::class);
-Route::resource('telefone', \App\Http\Controllers\TelefoneController::class);
+Route::resource('users', \App\Http\Controllers\UserController::class, [
+    'create', 'store', 'destroy', 'edit'
+]);
+Route::resource('enderecos', \App\Http\Controllers\EnderecoController::class);
+Route::resource('telefones', \App\Http\Controllers\TelefoneController::class);
